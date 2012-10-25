@@ -34,8 +34,12 @@ var gmh = {
             if (gmh.findSeries()) {
                 switch(gmh.series.t) {
                     case 2:
-                        gmh.htmlOut('series is y=' + gmh.series.a + 'x<sup>2</sup>' + (gmh.series.b > 0 ? '+' : '') + gmh.series.b + 'x' + (gmh.series.c > 0 ? '+' : '' ) + gmh.series.c);
-                        gmh.getNextTen();
+                        if (gmh.series.b != null) {
+                            gmh.htmlOut('series is y=' + gmh.series.a + 'x<sup>2</sup>' + (gmh.series.b > 0 ? '+' : '') + gmh.series.b + 'x' + (gmh.series.c > 0 ? '+' : '' ) + gmh.series.c);
+                            gmh.getNextTen();
+                        } else {
+                            gmh.htmlOut('I tried 100 iterations and am stopping so I don\'t blow your browser');
+                        }
                         break;
                     case 1:
                         gmh.htmlOut('series is y=' + gmh.series.b + 'x' + (gmh.series.c > 0 ? '+' : '') + gmh.series.c);
@@ -65,6 +69,8 @@ var gmh = {
                 default:
             }
             out +=',';
+            out += (i==this.arrSeries.length+5) ? '<br/>' : '';
+
         }
         out = out.substring(0,out.length-1);
         this.htmlOut(this.seriesOutput.innerHTML + '<br><br>next ten values are<br>' + out);
@@ -144,6 +150,7 @@ var gmh = {
         }
 
         b=0;
+        var bStart = 0;
         diffs = [];
         while (!out) {
 
@@ -168,6 +175,7 @@ var gmh = {
         } else {
             return out;
         }
+        if (Math.abs(b) - bStart > 100) {out=true;this.series.b = null;}
 
     },
 
