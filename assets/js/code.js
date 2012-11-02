@@ -206,7 +206,13 @@ var gmh = {
                 if (bIsPlus) {b++;} else {b--;} //if B is positive number increment B by +1 if not by -1
             }
 
+            //fail safe - stop after 100 iterations
+            bStart ++;
+            if (bStart > 100) {out = true;b=null;}
+
+
         }
+
         //if found B then set series type (t) to second order and set the value of B found
 
         if (out){
@@ -218,7 +224,7 @@ var gmh = {
         }
         //add a fail safe to stop iterating after a 100 attempts
 
-        if (Math.abs(b) - bStart > 100) {out=true;this.series.b = null;}
+
 
     },
 
