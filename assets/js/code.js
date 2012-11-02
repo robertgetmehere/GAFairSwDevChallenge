@@ -9,9 +9,22 @@ var gmh = {
      * y=Bx+C has constant gradient B
      * y=Ax^2+Bx+C has gradient 2Ax+B
      *
+     * documentation taken from http://code.google.com/p/jsdoc-toolkit/wiki/TagReference
+     *
+     * 	NOTE:
+     *
+     * 	this is my second submission for this challenge - It improves on my first submission
+     *  which I submitted as is before the hurricane in case of long term power outage
+
      */
 
-    /** SET UP **/
+    /*
+
+     @function    initialize
+     @returns     null
+
+     */
+
     initialize: function() {
         this.seriesInput = document.getElementById('seriesInput');
         this.seriesOutput = document.getElementById('seriesOutput');
@@ -23,7 +36,11 @@ var gmh = {
         this.arrSeries = null;
     },
 
-    /** SERIES FUNCTIONS **/
+    /*
+
+    @function       procInput   initializes variables and processes input to try and identify series
+
+     */
     procInput: function() {
         gmh.output = {};
         gmh.series = {a:0,b:0,c:0,t:0};
@@ -68,6 +85,12 @@ var gmh = {
             gmh.htmlOut('I need 3 comma separated numbers<br/>please try again');
         }
     },
+
+    /*
+
+    @function       getNextTen      prints next ten numbers in series as concatonated string for display
+
+     */
     getNextTen: function() {
         var out='';
         for (var i=this.arrSeries.length+1;i<this.arrSeries.length+11;i++) {
@@ -87,6 +110,13 @@ var gmh = {
         out = out.substring(0,out.length-1);
         this.htmlOut(this.seriesOutput.innerHTML + '<br><br>next ten values are<br>' + out);
     },
+
+    /*
+
+    @function       findSeries          processes input series for different types
+    @returns        {Boolean}           series was identified
+
+     */
     findSeries: function() {
         console.log('test for first order series and return if true');
 
@@ -98,6 +128,14 @@ var gmh = {
 
         return false;
     },
+
+    /*
+
+    @function       getDeltas   calculates first order gradients assuming x interval of 1 (dx=1 in dy/dx)
+    @param          {Array}     integers representing series input by user
+    @returns        {Array}     integer values of gradients (x[i]-x[i-1])
+
+     */
     getDeltas: function(series) {
         var deltas = new Array();
         for (var i=0;i<series.length-1;i++) {
@@ -105,6 +143,14 @@ var gmh = {
         }
         return deltas;
     },
+
+    /*
+
+    @function       getDiffs                calculates differences between actual and iterated series
+    @param          {Integer}   iteration   index of current iteration
+    @param          {Array}     sample      integer series for current iteration of values
+
+     */
     getDiffs: function(iteration,sample,actual) {
         var deltas = new Array();
         for (var i=0;i<sample.length-1;i++) {
@@ -112,6 +158,12 @@ var gmh = {
         }
         return deltas;
     },
+
+    /*
+
+    @function       seriesIsFirstOrder      identifies whether input series is of type y=Bx+C
+    @returns        {Boolean}               is series First Order or Not
+     */
     seriesIsFirstOrder: function() {
 
         //gradient of Bx+C = B - so deltas between points are constant
@@ -137,6 +189,13 @@ var gmh = {
             return out;
         }
     },
+
+    /*
+
+    @function       seriesIsSecondOrder     identifies whether input series is of type y=Ax^2+Bx+C
+    @returns        {Boolean}               is series second order or not
+
+     */
     seriesIsSecondOrder: function() {
 
         //gradient of Ax^2+Bx+C == 2Ax+B so deltas between points have a first order equation
@@ -230,6 +289,12 @@ var gmh = {
 
 
     /** UTILITY FUNCTIONS **/
+
+   /*
+
+   @function        validateInput       takes web page input and validates it for use - if ok then creates series
+
+    */
     validateInput: function() {
         //check if input value is empty
         if (this.seriesInput.value.length > 0) {
@@ -261,26 +326,42 @@ var gmh = {
         }
     },
 
-    //utility function to set up output messages
+    /*
+    @function       htmlOut             utility function to set up output messages
+    @param          {String}    msg     message to output to screen
+
+     */
 
     htmlOut:function(msg) {
         this.output = {msg:msg};
         this.showError();
     },
 
-    //utility function to set up loading image for duration of calculation
+    /*
+
+    @function       showLoading        utility function to set up loading image for duration of calculation
+
+     */
 
     showLoading:function() {
         this.seriesOutput.style.backgroundImage = 'url(\'../img/loader_40x40.gif\')';
     },
 
-    //utility function to remove loading image when calculation complete
+    /*
+
+    @function       hideLoading     utility function to remove loading image when calculation complete
+
+     */
 
     hideLoading:function() {
         this.seriesOutput.style.backgroundImage = 'url(\'\')';
     },
 
-    //utility function to render output messages on the screen
+    /*
+
+    @function       showError       utility function to render output messages on the screen
+
+     */
 
     showError: function(){
         if (this.output.msg.length > 0) {
